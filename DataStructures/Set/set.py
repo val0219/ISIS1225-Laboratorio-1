@@ -1,14 +1,17 @@
+import csv
+
+
 def new_set():
     my_new_set = {
         'size': 0,
-        'elements': set([])
+        'elements': []
     }
     return my_new_set
 
 
 def add_element(my_set, element):
     if element not in my_set['elements']:
-        my_set['elements'].add(element)
+        my_set['elements'].append(element)
         my_set['size'] += 1
     return my_set
 
@@ -18,6 +21,15 @@ def remove_element(my_set, element):
         my_set['elements'].remove(element)
         my_set['size'] -= 1
     return my_set
+
+
+def load_set(my_set, filename):
+    if (filename is not None):
+        input_file = csv.DictReader(open(filename, encoding="utf-8"),
+                                    delimiter=",")
+    for line in input_file:
+        add_element(my_set, line)
+    return (my_set)
 
 
 def size(my_set):

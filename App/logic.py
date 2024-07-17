@@ -26,16 +26,15 @@
  * Andres Rodriguez - Última version
  """
 
+import config as cf
+import os
+import csv
+from DataStructures import set as set
+assert cf
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
 """
-
-
-import config as cf
-import os
-from DataStructures import set as set
-assert cf
 
 
 def new_logic():
@@ -68,27 +67,25 @@ def load_books(app, filename):
     """
     books = app.get("books")
     booksfile = os.path.join(cf.data_dir, filename)
-    app["books"] = set.new_set()
+    app["books"] = set.load_set(books, booksfile)
     if empty_books(app):
         return None
     else:
         return book_size(app)
 
 
-def load_tags(control, filename):
+def load_tags(app, filename):
     """
     Carga todos los tags del archivo y los agrega a la lista de tags
     """
-    catalog = control.get("model")
+    tags = app.get("tags")
     tagsfile = os.path.join(cf.data_dir, filename)
-    input_file = csv.DictReader(open(tagsfile, encoding="utf-8"))
-    catalog = model.createTagList(catalog)
-    for tag in input_file:
-        model.addTag(catalog, tag)
-    if model.emptyTags(catalog):
+    app["tags"] = set.load_set(tags, tagsfile)
+
+    if set.is_empty(tags):
         return None
     else:
-        return model.tagSize(catalog)
+        return set.size(tags)
 
 
 def load_books_tags(control, filename):
@@ -99,91 +96,19 @@ def load_books_tags(control, filename):
     # TODO: Mods Lab 1, integrar vista y modelo
     pass
 
-# Archivo model
-
-
-def newCatalog():
-    """
-    Inicializa el catálogo de libros. Crea una lista vacia para guardar
-    todos los libros, adicionalmente, crea una lista vacia para los autores,
-    una lista vacia para los generos y una lista vacia para la asociación
-    generos y libros. Retorna el catalogo inicializado.
-    """
-    catalog = {
-        "books": None,
-        "tags": None,
-        "book_tags": None,
-    }
-
-    # definicion de arreglos
-    catalog["books"] = lt.newList(datastructure="ARRAY_LIST")
-    catalog["tags"] = lt.newList(datastructure="ARRAY_LIST")
-    catalog["book_tags"] = lt.newList(datastructure="ARRAY_LIST")
-    return catalog
-
-
-# Funciones para agregar informacion al catalogo
-
-def addBooks(catalog, booksfile):
-    """
-    Para guardar los libros provenientes del archivo CSV
-    vamos a crear una lista, en donde quedarán todos los datos.
-
-    No es importante entender como funciona esta lista por ahora.
-
-    La funcion newList crea una lista de muchas formas. Una de ellas
-    es leyendo todo lo que encuentre en el archivo indicado por filename.
-    Cada linea del archivo quedará en una posicion de la lista.
-    """
-    books = catalog.get("books")
-    books = lt.newList(datastructure="SINGLE_LINKED",
-                       filename=booksfile)
-    catalog.update({"books": books})
-    return catalog
-
-
-def addTag(catalog, tag):
-    """
-    Para procesar el archivo de tags vamos a usar de otra forma la lista.
-    En este caso, agregaremos cada linea del archivo a la lista, en lugar
-    de usar la opcion de crearla con el nombre del archivo.
-    """
-    tags = catalog.get("tags")
-    lt.addLast(tags, tag)
-    return catalog
-
-
-def createTagList(catalog):
-    """
-    Esta funcion crea una lista vacia. Esta lista se utilizara
-    para ir guardando la informacion en el archivo de tags.
-    """
-    tags = lt.newList(datastructure="SINGLE_LINKED")
-    catalog.update({"tags": tags})
-    return catalog
-
-
-def addBookTags(catalog, booktagsfile):
-    """
-    Esta funcion crea una lista basado en el archivo de booktags. siga
-    el mismo procedimiento que la funcion addBooks.
-    """
-    # TODO: Mods Lab 1, completar funcion.
-    pass
-
-
 # Funciones de consulta
+
 
 def book_size(catalog):
     return set.size(catalog["books"])
 
 
-def tagSize(catalog):
-    return lt.size(catalog["tags"])
+def tag_size(catalog):
+    return set.size(catalog["tags"])
 
 
-def bookTagSize(catalog):
-    return lt.size(catalog["book_tags"])
+def book_tag_size(catalog):
+    return set.size(catalog["book_tags"])
 
 
 def empty_books(catalog):
@@ -191,11 +116,11 @@ def empty_books(catalog):
     return set.is_empty(books)
 
 
-def emptyTags(catalog):
+def empty_tags(catalog):
     tags = catalog.get("tags")
-    return lt.isEmpty(tags)
+    return set.is_empty(tags)
 
 
-def emptyBookTags(catalog):
+def empty_book_tags(catalog):
     book_tags = catalog.get("book_tags")
-    return lt.isEmpty(book_tags)
+    return set.is_empty(book_tags)
