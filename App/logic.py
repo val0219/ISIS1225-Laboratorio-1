@@ -93,7 +93,7 @@ def load_books_tags(control, filename):
     Carga los tags de los libros del archivo y los agrega a la lista
     de tags. Siga el mismo procedimiento que en la carga de libros.
     """
-    # TODO: Mods Lab 1, integrar vista y modelo
+    # TODO: Mods Lab 1, integrar vista y logica
     pass
 
 # Funciones de consulta
