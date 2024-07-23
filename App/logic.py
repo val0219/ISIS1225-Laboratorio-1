@@ -26,11 +26,11 @@
  * Andres Rodriguez - Última version
  """
 
-import config as cf
 import os
-import csv
+
 from DataStructures import set as set
-assert cf
+
+data_dir = os.path.dirname(os.path.realpath('__file__')) + '/Data/'
 
 """
 El controlador se encarga de mediar entre la vista y el modelo.
@@ -66,7 +66,7 @@ def load_books(app, filename):
     referencia al libro que se esta procesando.
     """
     books = app.get("books")
-    booksfile = os.path.join(cf.data_dir, filename)
+    booksfile = os.path.join(data_dir, filename)
     app["books"] = set.load_set(books, booksfile)
     if empty_books(app):
         return None
@@ -79,7 +79,7 @@ def load_tags(app, filename):
     Carga todos los tags del archivo y los agrega a la lista de tags
     """
     tags = app.get("tags")
-    tagsfile = os.path.join(cf.data_dir, filename)
+    tagsfile = os.path.join(data_dir, filename)
     app["tags"] = set.load_set(tags, tagsfile)
 
     if set.is_empty(tags):

@@ -2,11 +2,16 @@ import csv
 
 
 def new_set():
+    """Crea un conjunto vacío
+
+    Returns:
+        set: Set creado
+    """
     my_new_set = {
         'size': 0,
         'elements': []
     }
-    return my_new_set
+    return (my_new_set)
 
 
 def add_element(my_set, element):

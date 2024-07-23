@@ -26,8 +26,8 @@
  """
 
 import sys
-import logic
 
+import App.logic as logic
 
 """
 La vista se encarga de la interacción con el usuario
@@ -86,11 +86,13 @@ def load_books_tags(app):
 app = new_logic()
 
 # main del ejercicio
-if __name__ == "__main__":
 
+
+def main():
     """
     Menu principal
     """
+
     working = True
     # ciclo del menu
     while working:
